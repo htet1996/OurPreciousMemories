@@ -91,10 +91,19 @@ export default function Lightbox({ photos, index, onClose, onNavigate }: Props) 
             transition={{ type: "spring", stiffness: 140, damping: 18 }}
             className="max-h-[88dvh] w-full max-w-3xl overflow-hidden rounded-xl2 bg-white/10"
             onClick={(e) => e.stopPropagation()}
+            drag={photos.length > 1 ? "x" : false}
+            dragDirectionLock
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={(_, info) => {
+              if (info.offset.x < -70) goNext();
+              else if (info.offset.x > 70) goPrev();
+            }}
           >
             <img
               src={photo.image_url ?? ""}
               alt={photo.caption ?? "Memory"}
+              draggable={false}
               className="max-h-[70dvh] w-full object-contain"
             />
             {(photo.caption || photo.author) && (

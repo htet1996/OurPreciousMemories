@@ -1,8 +1,8 @@
-import { motion } from "framer-motion";
 import { Images, MessagesSquare, ChevronRight, ImageOff, MailOpen } from "lucide-react";
 import type { Memory } from "../types";
 import { config } from "../lib/config";
 import MessageCarousel from "./MessageCarousel";
+import PhotoCarousel from "./PhotoCarousel";
 
 interface Props {
   photos: Memory[];
@@ -17,8 +17,6 @@ export default function HomeDashboard({
   onViewMemories,
   onViewMessages,
 }: Props) {
-  const photoPreview = photos.slice(0, 6);
-
   return (
     <div className="space-y-6">
       {/* Greeting */}
@@ -41,28 +39,11 @@ export default function HomeDashboard({
           title="Memories"
           onViewAll={onViewMemories}
         />
-        {photoPreview.length === 0 ? (
+        {photos.length === 0 ? (
           <MiniEmpty icon={<ImageOff size={26} />} text="No photos yet — add your first 🌸" />
         ) : (
-          <div className="grid grid-cols-3 gap-2 sm:gap-3">
-            {photoPreview.map((p, i) => (
-              <motion.button
-                key={p.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.05 }}
-                onClick={onViewMemories}
-                className="group aspect-square overflow-hidden rounded-2xl border border-white/60 shadow-soft"
-              >
-                <img
-                  src={p.image_url ?? ""}
-                  alt={p.caption ?? "Memory"}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-              </motion.button>
-            ))}
-          </div>
+          // One photo at a time, auto-plays; swipe to browse, tap to open all.
+          <PhotoCarousel photos={photos} onOpen={onViewMemories} />
         )}
       </section>
 

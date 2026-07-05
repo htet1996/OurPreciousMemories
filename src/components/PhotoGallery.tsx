@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ImageOff } from "lucide-react";
+import { ImageOff, Maximize2 } from "lucide-react";
 import type { Memory } from "../types";
 import { formatDate } from "../lib/format";
 import Lightbox from "./Lightbox";
@@ -14,25 +14,59 @@ interface Props {
 
 type Orientation = "portrait" | "landscape" | "square";
 
-/**
- * Grid classes per orientation, so the wall becomes a lively mosaic where
- * every photo is sized by its own shape (portrait = tall, landscape = wide).
- */
-function spanFor(o: Orientation): string {
-  switch (o) {
-    case "portrait":
-      return "row-span-2"; // tall
-    case "landscape":
-      return "sm:col-span-2"; // wide
+// Custom sizes the user can cycle a tile through. "auto" = size by orientation.
+type SizeKey = "auto" | "small" | "wide" | "tall" | "big";
+const SIZE_CYCLE: SizeKey[] = ["auto", "small", "wide", "tall", "big"];
+const SIZE_LABEL: Record<SizeKey, string> = {
+  auto: "Auto",
+  small: "Small",
+  wide: "Wide",
+  tall: "Tall",
+  big: "Big",
+};
+
+const STORE_KEY = "omg:photoSizes";
+
+function loadSizes(): Record<string, SizeKey> {
+  try {
+    return JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+/** Grid span classes for a given custom size, or by orientation when "auto". */
+function spanFor(size: SizeKey, o: Orientation): string {
+  switch (size) {
+    case "small":
+      return "";
+    case "wide":
+      return "col-span-2";
+    case "tall":
+      return "row-span-2";
+    case "big":
+      return "col-span-2 row-span-2";
     default:
-      return ""; // square = 1x1
+      // auto → follow the photo's real shape
+      if (o === "portrait") return "row-span-2";
+      if (o === "landscape") return "col-span-2";
+      return "";
   }
 }
 
 export default function PhotoGallery({ photos, onDeleted }: Props) {
   const [active, setActive] = useState<number | null>(null);
-  // Measured orientation per photo id (filled once each image loads).
   const [orient, setOrient] = useState<Record<string, Orientation>>({});
+  const [sizes, setSizes] = useState<Record<string, SizeKey>>(() => loadSizes());
+  const [editing, setEditing] = useState(false);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify(sizes));
+    } catch {
+      /* ignore */
+    }
+  }, [sizes]);
 
   const measure = (id: string, img: HTMLImageElement) => {
     const { naturalWidth: w, naturalHeight: h } = img;
@@ -41,6 +75,14 @@ export default function PhotoGallery({ photos, onDeleted }: Props) {
     const o: Orientation =
       ratio > 1.2 ? "landscape" : ratio < 0.83 ? "portrait" : "square";
     setOrient((prev) => (prev[id] === o ? prev : { ...prev, [id]: o }));
+  };
+
+  const cycleSize = (id: string) => {
+    setSizes((prev) => {
+      const cur = prev[id] ?? "auto";
+      const next = SIZE_CYCLE[(SIZE_CYCLE.indexOf(cur) + 1) % SIZE_CYCLE.length];
+      return { ...prev, [id]: next };
+    });
   };
 
   if (photos.length === 0) {
@@ -58,10 +100,26 @@ export default function PhotoGallery({ photos, onDeleted }: Props) {
       {/* Live auto-advancing hero */}
       <Slideshow photos={photos} onOpen={(idx) => setActive(idx)} />
 
-      {/* Orientation-aware mosaic grid */}
-      <div className="grid auto-rows-[180px] grid-cols-2 gap-3 sm:auto-rows-[200px] sm:grid-cols-3 lg:grid-cols-4">
+      {/* Arrange toggle */}
+      <div className="mb-3 flex justify-end">
+        <button
+          onClick={() => setEditing((e) => !e)}
+          className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-1.5 font-body text-sm font-medium transition ${
+            editing
+              ? "border-transparent bg-gradient-to-r from-pinkHot to-plum text-white shadow-soft"
+              : "border-pinkSoft/70 bg-white/70 text-darkRose"
+          }`}
+        >
+          <Maximize2 size={15} />
+          {editing ? "Done arranging" : "Arrange sizes"}
+        </button>
+      </div>
+
+      {/* Orientation-aware, customizable mosaic grid */}
+      <div className="grid auto-rows-[150px] grid-cols-2 gap-3 sm:auto-rows-[180px] sm:grid-cols-3 lg:grid-cols-4">
         {photos.map((photo, i) => {
           const o = orient[photo.id] ?? "square";
+          const size = sizes[photo.id] ?? "auto";
           return (
             <motion.figure
               key={photo.id}
@@ -70,14 +128,17 @@ export default function PhotoGallery({ photos, onDeleted }: Props) {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: (i % 8) * 0.04 }}
               className={`gv-item group relative cursor-pointer overflow-hidden rounded-xl2 border border-white/60 bg-white/60 shadow-soft ${spanFor(
+                size,
                 o
               )}`}
-              onClick={() => setActive(i)}
+              onClick={() => (editing ? cycleSize(photo.id) : setActive(i))}
             >
               {/* delete — appears on hover (always visible on touch) */}
-              <div className="absolute right-2 top-2 z-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100 [@media(hover:none)]:opacity-100">
-                <DeleteButton memory={photo} onDeleted={onDeleted} tone="light" />
-              </div>
+              {!editing && (
+                <div className="absolute right-2 top-2 z-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100 [@media(hover:none)]:opacity-100">
+                  <DeleteButton memory={photo} onDeleted={onDeleted} tone="light" />
+                </div>
+              )}
 
               <img
                 src={photo.image_url ?? ""}
@@ -90,8 +151,17 @@ export default function PhotoGallery({ photos, onDeleted }: Props) {
                 }`}
               />
 
-              {/* caption overlay on hover */}
-              {(photo.caption || photo.author) && (
+              {/* Size badge while arranging */}
+              {editing && (
+                <div className="absolute inset-0 z-10 flex items-center justify-center bg-darkRose/30">
+                  <span className="flex items-center gap-1 rounded-full bg-white/90 px-3 py-1.5 font-body text-xs font-semibold text-darkRose shadow-soft">
+                    <Maximize2 size={13} /> {SIZE_LABEL[size]}
+                  </span>
+                </div>
+              )}
+
+              {/* caption overlay on hover (view mode only) */}
+              {!editing && (photo.caption || photo.author) && (
                 <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 bg-gradient-to-t from-darkRose/75 to-transparent px-3 py-2.5 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                   {photo.caption && (
                     <p className="line-clamp-2 font-body text-xs text-white">
@@ -108,6 +178,12 @@ export default function PhotoGallery({ photos, onDeleted }: Props) {
           );
         })}
       </div>
+
+      {editing && (
+        <p className="mt-4 text-center font-body text-xs text-darkRose/60">
+          Tap any photo to change its size · Small → Wide → Tall → Big → Auto
+        </p>
+      )}
 
       <Lightbox
         photos={photos}

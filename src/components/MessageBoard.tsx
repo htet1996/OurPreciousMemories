@@ -19,8 +19,6 @@ export default function MessageBoard({ messages, onDeleted }: Props) {
     );
   }
 
-  // Auto-playing, one-at-a-time — with arrows + dots to browse manually.
-  return (
-    <MessageCarousel messages={messages} onDeleted={onDeleted} controls />
-  );
+  // Auto-playing, one-at-a-time — swipe left/right (or tap dots) to browse.
+  return <MessageCarousel messages={messages} onDeleted={onDeleted} />;
 }

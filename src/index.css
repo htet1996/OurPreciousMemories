@@ -20,17 +20,29 @@ body,
 body {
   font-family: "Poppins", system-ui, sans-serif;
   color: #4a0e2e;
-  /* Soft romantic gradient: pink → lavender → white */
-  background: linear-gradient(160deg, #ffe3ec 0%, #f3e8ff 45%, #fff6fb 100%);
-  background-attachment: fixed;
+  /* Soft romantic gradient: pink → lavender → white.
+     NOTE: no `background-attachment: fixed` — it causes heavy scroll jank on
+     mobile. A fixed gradient layer (below) gives the same look, cheaply. */
+  background: #fff6fb;
   min-height: 100vh;
   overflow-x: hidden;
 }
 
+/* Cheap fixed gradient backdrop (composited once, never repaints on scroll). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -20;
+  background: linear-gradient(160deg, #ffe3ec 0%, #f3e8ff 45%, #fff6fb 100%);
+}
+
 @layer components {
-  /* Glassmorphism card used across the app */
+  /* "Glass" card. We dropped backdrop-blur (very expensive on mobile, and it
+     was on dozens of elements) for a slightly more opaque background — looks
+     nearly identical over the soft gradient, far lighter to render. */
   .glass {
-    @apply rounded-xl2 border border-white/60 bg-white/55 shadow-soft backdrop-blur-md;
+    @apply rounded-xl2 border border-white/60 bg-white/70 shadow-soft;
   }
 
   .btn-primary {
@@ -51,7 +63,9 @@ body {
     @apply font-script text-roseGold;
   }
 
-  /* Shimmery rose-gold gradient text for the big birthday heading */
+  /* Rose-gold gradient text for the big birthday heading.
+     (Static gradient — the old infinite shimmer repainted the text every
+     frame, which added constant cost for no real benefit.) */
   .text-rosegold {
     background: linear-gradient(
       100deg,
@@ -61,12 +75,10 @@ body {
       #c98a94 75%,
       #b76e79 100%
     );
-    background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
-    animation: shimmer 6s linear infinite;
   }
 
   /* Section header row: icon + title + optional "View all" */

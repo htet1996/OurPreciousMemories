@@ -19,7 +19,7 @@ export default function BottomNav({ active, onChange }: Props) {
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-4">
       <div
-        className="flex w-full max-w-md items-stretch justify-between gap-1 rounded-full border border-white/60 bg-white/70 p-1.5 shadow-soft backdrop-blur-xl"
+        className="flex w-full max-w-md items-stretch justify-between gap-1 rounded-full border border-white/60 bg-white/85 p-1.5 shadow-soft"
         style={{ paddingBottom: "max(0.375rem, env(safe-area-inset-bottom))" }}
       >
         {ITEMS.map((it) => {

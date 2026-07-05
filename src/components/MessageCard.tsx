@@ -55,7 +55,7 @@ export default function MessageCard({ message, onDeleted, compact }: Props) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-30px" }}
       transition={{ duration: 0.4 }}
-      className="group relative flex gap-3 rounded-xl2 border border-white/60 bg-white/60 p-4 shadow-soft backdrop-blur-md"
+      className="group relative flex gap-3 rounded-xl2 border border-white/60 bg-white/75 p-4 shadow-soft"
     >
       {/* Avatar */}
       <div

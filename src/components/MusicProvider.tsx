@@ -176,10 +176,10 @@ export function MusicButton() {
         onClick={toggle}
         aria-label={playing ? "Pause music" : "Play music"}
         title={failed ? "Add songs at /public/music/song1.mp3 …" : "Toggle music"}
-        className={`flex h-11 w-11 items-center justify-center rounded-full border border-white/60 shadow-soft backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 ${
+        className={`flex h-11 w-11 items-center justify-center rounded-full border border-white/60 shadow-soft transition-all duration-300 hover:scale-105 active:scale-95 ${
           playing
             ? "bg-gradient-to-br from-pinkHot to-plum text-white shadow-glow"
-            : "bg-white/60 text-roseGold"
+            : "bg-white/80 text-roseGold"
         }`}
       >
         {playing ? <Music size={19} /> : <VolumeX size={19} />}

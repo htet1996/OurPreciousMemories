@@ -15,7 +15,7 @@ interface FloatItem {
   opacity: number;
 }
 
-export default function FloatingElements({ count = 18 }: { count?: number }) {
+export default function FloatingElements({ count = 9 }: { count?: number }) {
   const items = useMemo<FloatItem[]>(
     () =>
       Array.from({ length: count }).map(() => ({

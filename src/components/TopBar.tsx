@@ -35,7 +35,7 @@ export default function TopBar({ onOpenMenu }: Props) {
   };
 
   const glassBtn =
-    "flex h-11 w-11 items-center justify-center rounded-full border border-white/60 bg-white/60 text-roseGold shadow-soft backdrop-blur-md transition-all hover:scale-105 active:scale-95";
+    "flex h-11 w-11 items-center justify-center rounded-full border border-white/60 bg-white/80 text-roseGold shadow-soft transition-all hover:scale-105 active:scale-95";
 
   return (
     <div className="sticky top-0 z-40">

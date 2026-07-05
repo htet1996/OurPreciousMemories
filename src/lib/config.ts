@@ -11,6 +11,8 @@ export const config = {
   subtitle:
     env.VITE_SUBTITLE?.trim() ||
     "A little garden of our memories, always growing 🌸",
+  // Shown on the landing page BEFORE the gift box appears.
+  intro: env.VITE_INTRO?.trim() || "Someone loves you very much 💗",
   password: env.VITE_APP_PASSWORD ?? "loveyou28",
   passwordEnabled: (env.VITE_PASSWORD_ENABLED ?? "true").toLowerCase() !== "false",
 };

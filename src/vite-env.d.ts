@@ -8,6 +8,7 @@ interface ImportMetaEnv {
   readonly VITE_BIRTHDAY_AGE: string;
   readonly VITE_GREETING: string;
   readonly VITE_SUBTITLE: string;
+  readonly VITE_INTRO: string;
   readonly VITE_PASSWORD_ENABLED: string;
 }
 

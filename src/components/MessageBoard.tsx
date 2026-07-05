@@ -1,24 +1,13 @@
-import { MailOpen } from "lucide-react";
 import type { Memory } from "../types";
-import { EmptyState } from "./PhotoGallery";
-import MessageCarousel from "./MessageCarousel";
+import MessagesFloat from "./MessagesFloat";
 
 interface Props {
   messages: Memory[];
-  onDeleted: (id: string) => void;
+  // Kept for API compatibility with App; deletion now lives in the Timeline.
+  onDeleted?: (id: string) => void;
 }
 
-export default function MessageBoard({ messages, onDeleted }: Props) {
-  if (messages.length === 0) {
-    return (
-      <EmptyState
-        icon={<MailOpen size={40} />}
-        title="No messages yet"
-        text="Write the first heartfelt note with the ➕ button 💌"
-      />
-    );
-  }
-
-  // Auto-playing, one-at-a-time — swipe left/right (or tap dots) to browse.
-  return <MessageCarousel messages={messages} onDeleted={onDeleted} />;
+export default function MessageBoard({ messages }: Props) {
+  // Messages drift up into the air, one at a time.
+  return <MessagesFloat messages={messages} />;
 }

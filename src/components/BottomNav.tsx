@@ -19,7 +19,7 @@ export default function BottomNav({ active, onChange }: Props) {
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-4">
       <div
-        className="flex w-full max-w-md items-stretch justify-between gap-1 rounded-full border border-white/60 bg-white/85 p-1.5 shadow-soft"
+        className="glass flex w-full max-w-md items-stretch justify-between gap-1 rounded-[1.75rem] bg-white/85 p-1.5"
         style={{ paddingBottom: "max(0.375rem, env(safe-area-inset-bottom))" }}
       >
         {ITEMS.map((it) => {
@@ -30,22 +30,24 @@ export default function BottomNav({ active, onChange }: Props) {
               onClick={() => onChange(it.key)}
               aria-label={it.label}
               aria-current={on ? "page" : undefined}
-              className="relative flex flex-1 flex-col items-center gap-0.5 rounded-full px-2 py-2"
+              className="relative flex flex-1 flex-col items-center gap-1 rounded-[1.4rem] px-2 py-2.5"
             >
               {on && (
                 <motion.span
                   layoutId="nav-pill"
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-pinkHot to-plum shadow-soft"
+                  className="absolute inset-0 rounded-[1.4rem] bg-gradient-to-br from-pinkHot to-plum shadow-glow"
                   transition={{ type: "spring", stiffness: 300, damping: 26 }}
                 />
               )}
-              <span
+              <motion.span
+                animate={{ scale: on ? 1.1 : 1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 className={`relative z-10 transition-colors ${
                   on ? "text-white" : "text-roseGold"
                 }`}
               >
                 {it.icon}
-              </span>
+              </motion.span>
               <span
                 className={`relative z-10 font-body text-[10px] font-medium transition-colors ${
                   on ? "text-white" : "text-darkRose/60"

@@ -30,6 +30,17 @@ export default function HomeDashboard({
         <p className="mx-auto mt-3 max-w-md font-body text-sm text-darkRose/70">
           {config.subtitle}
         </p>
+
+        {(photos.length > 0 || messages.length > 0) && (
+          <div className="mt-4 flex items-center justify-center gap-2">
+            <span className="rounded-full border border-white/70 bg-white/60 px-3 py-1 font-body text-xs text-darkRose/75">
+              🌸 {photos.length} {photos.length === 1 ? "memory" : "memories"}
+            </span>
+            <span className="rounded-full border border-white/70 bg-white/60 px-3 py-1 font-body text-xs text-darkRose/75">
+              💌 {messages.length} {messages.length === 1 ? "message" : "messages"}
+            </span>
+          </div>
+        )}
       </header>
 
       {/* Memories preview */}

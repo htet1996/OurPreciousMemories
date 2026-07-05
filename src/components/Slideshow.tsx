@@ -36,7 +36,7 @@ export default function Slideshow({ photos, intervalMs = 4000, onOpen }: Props) 
 
   return (
     <div
-      className="relative mb-8 aspect-[16/10] w-full overflow-hidden rounded-xl2 border border-white/60 shadow-soft sm:aspect-[16/9]"
+      className="glass relative mb-8 aspect-[16/10] w-full overflow-hidden p-0 sm:aspect-[16/9]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onTouchStart={() => setPaused(true)}
@@ -60,14 +60,14 @@ export default function Slideshow({ photos, intervalMs = 4000, onOpen }: Props) 
               i % 2 === 0 ? "animate-kenburns" : "animate-kenburnsAlt"
             }`}
           />
-          {/* soft gradient so caption is readable */}
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-darkRose/70 to-transparent p-5 text-left">
+          {/* soft, tall gradient so the caption reads elegantly */}
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-darkRose/85 via-darkRose/30 to-transparent px-5 pb-5 pt-20 text-left">
             {current.caption && (
-              <p className="font-body text-sm text-white drop-shadow sm:text-base">
+              <p className="font-body text-sm leading-snug text-white drop-shadow sm:text-base">
                 {current.caption}
               </p>
             )}
-            <p className="mt-0.5 font-body text-xs text-white/80">
+            <p className="mt-1 font-body text-[11px] uppercase tracking-wider text-white/75">
               {current.author ? `${current.author} · ` : ""}
               {formatDate(current.created_at)}
             </p>

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus, Loader2, AlertTriangle } from "lucide-react";
+import { Plus, AlertTriangle } from "lucide-react";
 
 import { config, isSupabaseConfigured } from "./lib/config";
 import { fetchMemories } from "./lib/supabase";
@@ -135,9 +135,17 @@ export default function App() {
               )}
 
               {loading ? (
-                <div className="flex flex-col items-center gap-3 py-24 text-roseGold">
-                  <Loader2 className="animate-spin" size={32} />
-                  <p className="font-body text-sm">Gathering your memories…</p>
+                <div className="flex flex-col items-center gap-4 py-24">
+                  <motion.span
+                    animate={{ scale: [1, 1.15, 1], rotate: [0, 10, -10, 0] }}
+                    transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
+                    className="text-4xl"
+                  >
+                    🌸
+                  </motion.span>
+                  <p className="font-body text-sm text-roseGold">
+                    Gathering your memories…
+                  </p>
                 </div>
               ) : loadError ? (
                 <div className="glass mx-auto max-w-md p-8 text-center">
@@ -158,9 +166,16 @@ export default function App() {
                   >
                     {/* Section title for non-home tabs */}
                     {tab !== "home" && (
-                      <h1 className="text-rosegold mb-5 text-center font-script text-4xl">
-                        {TAB_TITLES[tab]}
-                      </h1>
+                      <div className="mb-6 flex flex-col items-center">
+                        <h1 className="text-rosegold font-script text-4xl">
+                          {TAB_TITLES[tab]}
+                        </h1>
+                        <span className="mt-1 flex items-center gap-1.5">
+                          <span className="h-px w-6 bg-gradient-to-r from-transparent to-pinkSoft" />
+                          <span className="text-xs text-pinkHot">✦</span>
+                          <span className="h-px w-6 bg-gradient-to-l from-transparent to-pinkSoft" />
+                        </span>
+                      </div>
                     )}
 
                     {tab === "home" && (

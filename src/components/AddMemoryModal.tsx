@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Image as ImageIcon, PenLine } from "lucide-react";
+import { X, Image as ImageIcon, PenLine, Sparkles } from "lucide-react";
 import PhotoUpload from "./PhotoUpload";
 import AddMessage from "./AddMessage";
 import type { Memory } from "../types";
@@ -37,14 +37,22 @@ export default function AddMemoryModal({ open, onClose, onCreated }: Props) {
             exit={{ y: 40, opacity: 0 }}
             transition={{ type: "spring", stiffness: 130, damping: 18 }}
             onClick={(e) => e.stopPropagation()}
-            className="glass max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-b-none rounded-t-xl2 p-6 sm:rounded-xl2"
+            className="glass max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-b-none rounded-t-[2rem] p-6 sm:rounded-[2rem]"
           >
+            {/* grab handle (mobile sheet) */}
+            <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-pinkSoft/70 sm:hidden" />
+
             <div className="mb-5 flex items-center justify-between">
-              <h2 className="heading-display text-xl">Add a Memory</h2>
+              <div className="flex items-center gap-2">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-pinkHot to-plum text-white shadow-soft">
+                  <Sparkles size={16} />
+                </span>
+                <h2 className="heading-display text-xl">Add a Memory</h2>
+              </div>
               <button
                 onClick={onClose}
                 aria-label="Close"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/70 text-darkRose transition hover:bg-white"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/70 text-darkRose transition hover:bg-white active:scale-95"
               >
                 <X size={18} />
               </button>

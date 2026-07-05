@@ -44,13 +44,13 @@ export default function AddMessage({ onDone }: Props) {
         rows={5}
         autoFocus
         placeholder="Write your heartfelt message…"
-        className="w-full resize-none rounded-2xl border border-pinkSoft/70 bg-white/80 px-4 py-3 font-body leading-relaxed text-darkRose outline-none transition focus:border-pinkHot"
+        className="field resize-none leading-relaxed"
       />
       <input
         value={author}
         onChange={(e) => setAuthor(e.target.value)}
         placeholder="Your name"
-        className="w-full rounded-2xl border border-pinkSoft/70 bg-white/80 px-4 py-3 font-body text-darkRose outline-none transition focus:border-pinkHot"
+        className="field"
       />
 
       {error && <p className="font-body text-sm text-pinkHot">{error}</p>}

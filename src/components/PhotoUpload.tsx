@@ -97,13 +97,13 @@ export default function PhotoUpload({ onDone }: Props) {
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
         placeholder="Caption or a little note (optional)"
-        className="w-full rounded-2xl border border-pinkSoft/70 bg-white/80 px-4 py-3 font-body text-darkRose outline-none transition focus:border-pinkHot"
+        className="field"
       />
       <input
         value={author}
         onChange={(e) => setAuthor(e.target.value)}
         placeholder="Your name (optional)"
-        className="w-full rounded-2xl border border-pinkSoft/70 bg-white/80 px-4 py-3 font-body text-darkRose outline-none transition focus:border-pinkHot"
+        className="field"
       />
 
       {error && <p className="font-body text-sm text-pinkHot">{error}</p>}

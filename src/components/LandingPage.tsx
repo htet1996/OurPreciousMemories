@@ -36,6 +36,15 @@ export default function LandingPage({ onEnter }: Props) {
       transition={{ duration: 0.6 }}
       className="relative flex min-h-[100dvh] flex-col items-center justify-center px-6 text-center"
     >
+      {/* Soft radial glow behind everything for a dreamy, premium feel */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(60% 45% at 50% 42%, rgba(255,182,193,0.55) 0%, rgba(221,160,221,0.25) 40%, transparent 72%)",
+        }}
+      />
+
       {/* Fireworks burst the moment the gift is opened */}
       {opening && <Fireworks duration={1600} />}
 

@@ -56,7 +56,7 @@ export default function PasswordGate({ onUnlock }: Props) {
           onChange={(e) => setValue(e.target.value)}
           placeholder="Password"
           aria-label="Password"
-          className="mt-6 w-full rounded-full border border-pinkSoft/70 bg-white/80 px-5 py-3 text-center font-body text-darkRose outline-none transition focus:border-pinkHot focus:shadow-glow"
+          className="field mt-6 rounded-full text-center"
         />
 
         {wrong && (

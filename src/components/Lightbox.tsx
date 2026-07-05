@@ -48,7 +48,7 @@ export default function Lightbox({ photos, index, onClose, onNavigate }: Props) 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-darkRose/80 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-darkRose/90 p-4 backdrop-blur-sm"
           onClick={onClose}
         >
           <button
@@ -89,7 +89,7 @@ export default function Lightbox({ photos, index, onClose, onNavigate }: Props) 
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", stiffness: 140, damping: 18 }}
-            className="max-h-[88dvh] w-full max-w-3xl overflow-hidden rounded-xl2 bg-white/10"
+            className="max-h-[88dvh] w-full max-w-3xl overflow-hidden rounded-xl2 bg-white/10 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] ring-1 ring-white/10"
             onClick={(e) => e.stopPropagation()}
             drag={photos.length > 1 ? "x" : false}
             dragDirectionLock

@@ -146,9 +146,7 @@ export default function PhotoGallery({ photos, onDeleted }: Props) {
                 loading="lazy"
                 decoding="async"
                 onLoad={(e) => measure(photo.id, e.currentTarget)}
-                className={`h-full w-full object-cover transition-transform duration-[6000ms] ease-out group-hover:scale-110 ${
-                  i % 2 === 0 ? "animate-kenburns" : "animate-kenburnsAlt"
-                }`}
+                className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.08]"
               />
 
               {/* Size badge while arranging */}

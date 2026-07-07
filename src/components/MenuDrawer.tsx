@@ -38,16 +38,17 @@ export default function MenuDrawer({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[80] bg-darkRose/40 backdrop-blur-sm"
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-[80] bg-darkRose/50"
           onClick={onClose}
         >
           <motion.aside
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
-            transition={{ type: "spring", stiffness: 260, damping: 30 }}
+            transition={{ type: "tween", duration: 0.25, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
-            className="glass flex h-full w-[82%] max-w-xs flex-col rounded-l-none rounded-r-xl2 p-6"
+            className="glass flex h-full w-[82%] max-w-xs flex-col rounded-l-none rounded-r-xl2 p-6 will-change-transform"
           >
             <div className="mb-6 flex items-start justify-between">
               <div>

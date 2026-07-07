@@ -99,8 +99,6 @@ export default function App() {
 
   return (
     <div className="relative min-h-[100dvh]">
-      <FloatingElements />
-
       <AnimatePresence mode="wait">
         {stage === "landing" && (
           <LandingPage key="landing" onEnter={handleEnter} />
@@ -118,6 +116,7 @@ export default function App() {
             transition={{ duration: 0.6 }}
           >
            <MusicProvider autoStart={musicAutoStart}>
+            <FloatingElements />
             <TopBar onOpenMenu={() => setMenuOpen(true)} />
 
             <main className="mx-auto w-full max-w-3xl px-4 pb-32 pt-2 sm:px-6">
@@ -156,14 +155,7 @@ export default function App() {
                   </p>
                 </div>
               ) : (
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={tab}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.3 }}
-                  >
+                <div key={tab}>
                     {/* Section title for non-home tabs */}
                     {tab !== "home" && (
                       <div className="mb-6 flex flex-col items-center">
@@ -195,8 +187,7 @@ export default function App() {
                     {tab === "timeline" && (
                       <Timeline memories={memories} onDeleted={handleDeleted} />
                     )}
-                  </motion.div>
-                </AnimatePresence>
+                </div>
               )}
             </main>
 

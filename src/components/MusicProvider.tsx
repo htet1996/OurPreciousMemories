@@ -6,7 +6,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Music, VolumeX, SkipForward, SkipBack, Play, Pause } from "lucide-react";
 
 /**
@@ -77,7 +76,7 @@ export function MusicProvider({
   // One audio element for the whole app; auto-advance on end, skip on error.
   useEffect(() => {
     const audio = new Audio();
-    audio.volume = 0.4;
+    audio.volume = 0.9; // louder — was 0.4, which felt quiet even at full device volume
     audio.preload = "auto";
     audioRef.current = audio;
 
@@ -152,25 +151,21 @@ export function MusicButton() {
   const { playing, toggle, failed } = useMusic();
   return (
     <div className="relative">
-      <AnimatePresence>
-        {playing &&
-          [0, 1, 2].map((i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0, y: 0, x: 0, scale: 0.6 }}
-              animate={{ opacity: [0, 1, 0], y: 34, x: (i - 1) * 12, scale: 1 }}
-              transition={{
-                duration: 2.2,
-                repeat: Infinity,
-                delay: i * 0.5,
-                ease: "easeOut",
-              }}
-              className="pointer-events-none absolute left-1/2 top-full -translate-x-1/2 text-pinkHot"
-            >
-              ♪
-            </motion.span>
-          ))}
-      </AnimatePresence>
+      {/* CSS-driven drifting notes (no JS animation loop) */}
+      {playing &&
+        [0, 1, 2].map((i) => (
+          <span
+            key={i}
+            style={{
+              left: `calc(50% + ${(i - 1) * 12}px)`,
+              animation: "noteFloat 2.2s ease-out infinite",
+              animationDelay: `${i * 0.5}s`,
+            }}
+            className="pointer-events-none absolute top-full text-pinkHot"
+          >
+            ♪
+          </span>
+        ))}
 
       <button
         onClick={toggle}
